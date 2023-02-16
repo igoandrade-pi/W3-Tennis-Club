@@ -29,7 +29,7 @@ if SECRET_KEY is None:
   exit(1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 X_FRAME_OPTIONS = '*'
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project.urls'
@@ -127,10 +128,10 @@ USE_TZ = True
 
 STATIC_ROOT = Path.joinpath(BASE_DIR, "static")
 STATIC_URL = '/static/'
+# STATICFILES_DIRS = ('static',)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d', '%d/%m/%Y')
