@@ -1,0 +1,83 @@
+{% extends '../base.html' %}
+
+{% load custom_tags %}
+
+{% load bootstrap %}
+
+{% block title %}Member details{% endblock %}
+
+{% block content %}
+
+<h1>{{ member.firstname }} {{ member.lastname }}</h1>
+
+<div class="text-end">
+  <button type="button" class="btn btn-primary btn-sm mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#editMemberModal" title="Editar">
+    <i class="bi bi-pencil-fill"></i>
+  </button>
+
+  <button type="button" class="btn btn-danger btn-sm mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#delMemberModal" title="Excluir">
+    <i class="bi bi-trash"></i>
+  </button>
+</div>
+
+<!-- Modal Edit Member -->
+<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editMemberModalLabel">Edit Member</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          {{ form | bootstrap }}
+
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Delete Member -->
+<div class="modal fade" id="delMemberModal" tabindex="-1" aria-labelledby="delMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="delMemberModalLabel">Delete Member</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete the member <strong>{{member.firstname}} {{member.lastname}}</strong>?
+      </div>
+      <div class="modal-footer">
+        <a href="{% url 'members:delete_view' id=member.id %}" class="btn btn-danger btn-sm">Delete</a>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<table>
+  <tbody>
+    <tr>
+      <th scope="row">Phone:</th>
+      <td class="text-end">({{ member.ddd_phone }}) {{ member.phone }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Member since:</th>
+      <td class="text-end">{{ member.joined_date}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+  document.getElementById('id_joined_date').value = "{{member.joined_date|custom_date}}";
+</script>
+{% endblock %}

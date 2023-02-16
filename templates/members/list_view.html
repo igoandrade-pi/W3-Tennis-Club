@@ -1,0 +1,52 @@
+{% extends '../base.html' %}
+
+{% load bootstrap %}
+
+{% block title %}Members{% endblock %}
+
+{% block content %}
+<h1>Members</h1>
+
+<div class="text-end">
+  <button type="button" class="btn btn-primary btn-sm mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+    Add Member
+  </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addMemberModalLabel">Add Member</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          {{ form | bootstrap }}
+
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<table class="table table-sm table-striped table-hover">
+  <tbody>
+    {% for member in members %}
+    <tr>
+      <td>{{member.firstname}} {{member.lastname}}</td>
+      <td class="text-end">
+        <a href="{% url 'members:detail_view' id=member.id %}" class="btn btn-sm btn-primary" title="Ver detalhes"><i class="bi bi-eye"></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
